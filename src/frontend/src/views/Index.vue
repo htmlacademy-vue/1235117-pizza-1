@@ -182,19 +182,18 @@ import pizza from "@/static/pizza.json";
 
 export default {
   name: "Index",
-  pizza,
   computed: {
     doughs() {
-      return this.$options.pizza.dough;
+      return pizza.dough;
     },
     ingredients() {
-      return this.$options.pizza.ingredients;
+      return pizza.ingredients;
     },
     sauces() {
-      return this.$options.pizza.sauces;
+      return pizza.sauces;
     },
     sizes() {
-      return this.$options.pizza.sizes;
+      return pizza.sizes;
     },
   },
 };
