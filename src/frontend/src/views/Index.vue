@@ -30,17 +30,17 @@
 
               <div class="sheet__content dough">
                 <label
-                  v-for="(dough, index) in pizza.dough"
-                  :key="index"
+                  v-for="dough in doughs"
+                  :key="dough.value"
                   class="dough__input dough__input--light"
                   :class="`dough__input--${dough.value}`"
                 >
                   <input
                     type="radio"
-                    :name="dough.value"
+                    name="dough"
                     :value="dough.value"
                     class="visually-hidden"
-                    v-model="selectedDough"
+                    checked
                   />
                   <b>{{ dough.name }}</b>
                   <span>{{ dough.description }}</span>
@@ -55,8 +55,8 @@
 
               <div class="sheet__content diameter">
                 <label
-                  v-for="(size, index) in pizza.sizes"
-                  :key="index"
+                  v-for="size in sizes"
+                  :key="size.value"
                   class="diameter__input"
                   :class="`diameter__input--${size.value}`"
                 >
@@ -65,7 +65,7 @@
                     name="diameter"
                     :value="size.value"
                     class="visually-hidden"
-                    v-model="selectedSize"
+                    checked
                   />
                   <span>{{ size.name }}</span>
                 </label>
@@ -85,14 +85,14 @@
 
                   <label
                     class="radio ingridients__input"
-                    v-for="(sauce, index) in pizza.sauces"
-                    :key="index"
+                    v-for="sauce in sauces"
+                    :key="sauce.value"
                   >
                     <input
                       type="radio"
-                      :name="sauce.value"
+                      name="sauce"
                       :value="sauce.value"
-                      v-model="selectedSouce"
+                      checked
                     />
                     <span>{{ sauce.name }}</span>
                   </label>
@@ -103,8 +103,8 @@
 
                   <ul class="ingridients__list">
                     <li
-                      v-for="(ingredient, index) in pizza.ingredients"
-                      :key="index"
+                      v-for="ingredient in ingredients"
+                      :key="ingredient.value"
                       class="ingridients__item"
                     >
                       <span
@@ -181,24 +181,20 @@
 import pizza from "@/static/pizza.json";
 
 export default {
-  name: "IndexHome",
-  data() {
-    return {
-      pizza,
-      selectedSouce: this.getDefaultSauce(),
-      selectedDough: this.getDefaultDough(),
-      selectedSize: this.getDefaultSize(),
-    };
-  },
-  methods: {
-    getDefaultDough() {
-      return pizza.dough.find((dough) => dough.default).value;
+  name: "Index",
+  pizza,
+  computed: {
+    doughs() {
+      return this.$options.pizza.dough;
     },
-    getDefaultSauce() {
-      return pizza.sauces.find((sauce) => sauce.default).value;
+    ingredients() {
+      return this.$options.pizza.ingredients;
     },
-    getDefaultSize() {
-      return pizza.sizes.find((size) => size.default).value;
+    sauces() {
+      return this.$options.pizza.sauces;
+    },
+    sizes() {
+      return this.$options.pizza.sizes;
     },
   },
 };
