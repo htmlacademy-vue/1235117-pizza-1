@@ -179,21 +179,27 @@
 
 <script>
 import pizza from "@/static/pizza.json";
+import {
+  normilizeDough,
+  normilizeIngredients,
+  normilizeSauce,
+  normilizeSize,
+} from "@/common/helpers";
 
 export default {
   name: "Index",
   computed: {
     doughs() {
-      return pizza.dough;
+      return pizza.dough.map((item) => normilizeDough(item));
     },
     ingredients() {
-      return pizza.ingredients;
+      return pizza.ingredients.map((item) => normilizeIngredients(item));
     },
     sauces() {
-      return pizza.sauces;
+      return pizza.sauces.map((item) => normilizeSauce(item));
     },
     sizes() {
-      return pizza.sizes;
+      return pizza.sizes.map((item) => normilizeSize(item));
     },
   },
 };
