@@ -1,4 +1,4 @@
-import { DOUGH, INGREDIENTS, SAUCE, SIZE } from "./constans";
+import { DOUGH, INGREDIENTS, SAUCE, SIZE } from "./constants";
 
 export const normilizeDough = (dough) => {
   return {
