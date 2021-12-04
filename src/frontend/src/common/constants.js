@@ -79,7 +79,7 @@ export const SAUCE = [
   },
   {
     name: "Сливочный",
-    value: "creame",
+    value: "creamy",
   },
 ];
 

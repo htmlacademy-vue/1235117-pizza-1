@@ -3,27 +3,27 @@ import { DOUGH, INGREDIENTS, SAUCE, SIZE } from "./constants";
 export const normilizeDough = (dough) => {
   return {
     ...dough,
-    value: DOUGH.find(({ name }) => dough.name === name).value,
+    ...DOUGH.find(({ name }) => dough.name === name),
   };
 };
 
 export const normilizeIngredients = (ingredient) => {
   return {
     ...ingredient,
-    value: INGREDIENTS.find(({ name }) => ingredient.name === name).value,
+    ...INGREDIENTS.find(({ name }) => ingredient.name === name),
   };
 };
 
 export const normilizeSauce = (souce) => {
   return {
     ...souce,
-    value: SAUCE.find(({ name }) => souce.name === name).value,
+    ...SAUCE.find(({ name }) => souce.name === name),
   };
 };
 
 export const normilizeSize = (size) => {
   return {
     ...size,
-    value: SIZE.find(({ name }) => size.name === name).value,
+    ...SIZE.find(({ name }) => size.name === name),
   };
 };
