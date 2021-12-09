@@ -5,11 +5,11 @@
       <radio-button
         v-for="dough in doughs"
         :key="dough.value"
-        :name="'dough'"
+        name="dough"
         :value="dough.value"
         :checked="dough.value == selectedDough"
         :class-name="`dough__input dough__input--${dough.value}`"
-        @onChange="onSelectedDough(dough)"
+        @onChange="$emit('onChange', dough)"
       >
         <b>{{ dough.name }}</b>
         <span>{{ dough.description }}</span>
@@ -28,16 +28,10 @@ export default {
       type: Array,
       default: () => [],
     },
-  },
-  data() {
-    return {
-      selectedDough: "light",
-    };
-  },
-  methods: {
-    onSelectedDough(dough) {
-      this.selectedDough = dough.value;
-      this.$emit("onChange", dough);
+
+    selectedDough: {
+      type: String,
+      default: "light",
     },
   },
 };

@@ -8,11 +8,11 @@
         <radio-button
           v-for="sauce in sauces"
           :key="sauce.value"
-          :name="'sauce'"
+          name="sauce"
           :value="sauce.value"
           :checked="sauce.value == selectedSauce"
           :class="'radio ingridients__input'"
-          @onChange="selectedSauceChange(sauce)"
+          @onChange="$emit('onChangeSauce', sauce)"
         >
           <span>{{ sauce.name }}</span>
         </radio-button>
@@ -27,18 +27,23 @@
             :key="ingredient.value"
             class="ingridients__item"
           >
-            <app-drag :transferData="ingredient" :draggable="true">
+            <app-drag
+              :transferData="{
+                count: ingredient.count + 1,
+                value: ingredient.value,
+              }"
+              :draggable="ingredient.count !== max"
+            >
               <selector-item
                 :title="ingredient.name"
                 :className="`filling filling--${ingredient.value}`"
               ></selector-item>
             </app-drag>
             <item-counter
-              :min="0"
-              :max="3"
+              :min="min"
+              :max="max"
               :value="ingredient.count"
-              @plus="addIngredient($event, ingredient)"
-              @minus="removeIngredient($event, ingredient)"
+              @change="changeIngredient($event, ingredient.value)"
             ></item-counter>
           </li>
         </ul>
@@ -48,6 +53,7 @@
 </template>
 
 <script>
+import { MIN_COUNT, MAX_COUNT } from "@/common/constants.js";
 import AppDrag from "@/common/components/AppDrag.vue";
 import RadioButton from "@/common/components/RadioButton.vue";
 import ItemCounter from "@/common/components/ItemCounter.vue";
@@ -70,26 +76,23 @@ export default {
       type: Array,
       default: () => [],
     },
-  },
-  data() {
-    return {
-      selectedSauce: "tomato",
-    };
+
+    selectedSauce: {
+      type: String,
+      default: "tomato",
+    },
   },
   methods: {
-    selectedSauceChange(sauce) {
-      this.selectedSauce = sauce.value;
-      this.$emit("onChangeSauce", sauce);
+    changeIngredient(count, value) {
+      this.$emit("onChangeIngredient", { count, value });
     },
-
-    addIngredient(event, ingredient) {
-      ingredient.count = event;
-      this.$emit("onAddIngredient", ingredient);
+  },
+  computed: {
+    min() {
+      return MIN_COUNT;
     },
-
-    removeIngredient(event, ingredient) {
-      ingredient.count = event;
-      this.$emit("onRemoveIngredient", ingredient);
+    max() {
+      return MAX_COUNT;
     },
   },
 };

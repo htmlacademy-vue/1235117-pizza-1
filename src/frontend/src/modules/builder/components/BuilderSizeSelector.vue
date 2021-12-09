@@ -5,11 +5,11 @@
       <radio-button
         v-for="size in sizes"
         :key="size.value"
-        :name="'diameter'"
+        name="diameter"
         :value="size.value"
         :checked="size.value === selectedSize"
         :class-name="`diameter__input diameter__input--${size.value}`"
-        @onChange="setSize(size.multiplier, size.value)"
+        @onChange="setSize(size.multiplier)"
       >
         <span>{{ size.name }}</span>
       </radio-button>
@@ -27,15 +27,14 @@ export default {
       type: Array,
       default: () => [],
     },
-  },
-  data() {
-    return {
-      selectedSize: "normal",
-    };
+
+    selectedSize: {
+      type: String,
+      default: "normal",
+    },
   },
   methods: {
-    setSize(multiplier, value) {
-      this.selectedSize = value;
+    setSize(multiplier) {
       this.$emit("onChange", multiplier);
     },
   },

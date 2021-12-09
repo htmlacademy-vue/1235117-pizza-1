@@ -29,8 +29,7 @@
                 :ingredients="ingredients"
                 :sauces="sauces"
                 @onChangeSauce="setSauce"
-                @onAddIngredient="addIngredient"
-                @onRemoveIngredient="removeIngredient"
+                @onChangeIngredient="changeIngredient"
               ></builder-ingredients-selector>
             </div>
           </div>
@@ -40,8 +39,8 @@
               :dough="dough.value"
               :sauce="sauce.value"
               :ingredients="ingredientsList"
-              @onAddIngredient="addIngredient"
               @setName="setPizzaName"
+              @onAddIngredient="changeIngredient"
             ></builder-pizza-view>
             <builder-price-counter
               :total="total"
@@ -76,7 +75,7 @@ export default {
       sauce: { price: 50 },
       size: 2,
       pizzaName: "",
-      ingredientsList: [],
+      ingredients: pizza.ingredients.map((item) => normilizeIngredients(item)),
     };
   },
   components: {
@@ -99,24 +98,20 @@ export default {
     setPizzaName(pizzaName) {
       this.pizzaName = pizzaName;
     },
-    addIngredient(ingredient) {
-      this.ingredientsList.push(ingredient);
-    },
-    removeIngredient(ingredient) {
-      let index = this.ingredientsList.findIndex(
-        (item) => item.name === ingredient.name
+    changeIngredient(event) {
+      let index = this.ingredients.findIndex(
+        (item) => item.value === event.value
       );
-      if (index !== -1) {
-        this.ingredientsList.splice(index, 1);
-      }
+      this.ingredients[index].count = event.count;
+      this.ingredients.splice(index, 1, this.ingredients[index]);
     },
   },
   computed: {
+    ingredientsList() {
+      return this.ingredients.filter((item) => item.count > 0);
+    },
     doughs() {
       return pizza.dough.map((item) => normilizeDough(item));
-    },
-    ingredients() {
-      return pizza.ingredients.map((item) => normilizeIngredients(item));
     },
     sauces() {
       return pizza.sauces.map((item) => normilizeSauce(item));
@@ -130,7 +125,7 @@ export default {
     total() {
       let ingredientPrice = this.ingredientsList.reduce(
         (accumulator, ingredient) => {
-          return accumulator + ingredient.price;
+          return accumulator + ingredient.price * ingredient.count;
         },
         0
       );
@@ -141,3 +136,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/layout/content.scss";
+@import "~@/assets/scss/layout/sheet.scss";
+@import "~@/assets/scss/blocks/ingridients.scss";
+@import "~@/assets/scss/blocks/pizza.scss";
+@import "~@/assets/scss/blocks/filling.scss";
+@import "~@/assets/scss/blocks/diameter.scss";
+@import "~@/assets/scss/blocks/dough.scss";
+@import "~@/assets/scss/blocks/title.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/input.scss";
+@import "~@/assets/scss/blocks/counter.scss";
+</style>

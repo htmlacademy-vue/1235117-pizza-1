@@ -11,6 +11,7 @@ export const normilizeIngredients = (ingredient) => {
   return {
     ...ingredient,
     ...INGREDIENTS.find(({ name }) => ingredient.name === name),
+    count: 0,
   };
 };
 

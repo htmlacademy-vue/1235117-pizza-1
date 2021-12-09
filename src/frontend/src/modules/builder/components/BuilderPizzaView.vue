@@ -14,12 +14,16 @@
       <div class="content__constructor">
         <div :class="`pizza pizza--foundation--${doughName}-${sauceName}`">
           <div class="pizza__wrapper">
-            <div
-              v-for="(className, index) in ingredientsClasses"
-              :key="index"
-              class="pizza__filling"
-              :class="className"
-            ></div>
+            <template v-for="ingredient in ingredients">
+              <div
+                v-for="count in ingredient.count"
+                :key="`${ingredient.value}-${count}`"
+                class="pizza__filling"
+                :class="`pizza__filling pizza__filling--${
+                  ingredient.value
+                } ${ingredientsClasses(count)}`"
+              ></div>
+            </template>
           </div>
         </div>
       </div>
@@ -52,24 +56,19 @@ export default {
   },
   computed: {
     ingredientsClasses() {
-      let ingredients = [];
-      return this.ingredients.map((ingredient) => {
-        let classes = [`pizza__filling--${ingredient.value}`];
-        ingredients.push(ingredient.value);
-
-        let countIngredient = ingredients.filter(
-          (i) => i === ingredient.value
-        ).length;
-
-        if (countIngredient === 2) {
-          classes.push("pizza__filling--second");
-        } else if (countIngredient === 3) {
-          classes.push("pizza__filling--third");
+      return (number) => {
+        let className = "";
+        switch (number) {
+          case 2:
+            className = "pizza__filling--second";
+            break;
+          case 3:
+            className = "pizza__filling--third";
+            break;
         }
-        return classes.join(" ");
-      });
+        return className;
+      };
     },
-
     doughName() {
       return this.dough === "large" ? "big" : "small";
     },
@@ -79,8 +78,8 @@ export default {
     },
   },
   methods: {
-    onDrop(ingredient) {
-      this.$emit("onAddIngredient", ingredient);
+    onDrop(event) {
+      this.$emit("onAddIngredient", event);
     },
   },
 };

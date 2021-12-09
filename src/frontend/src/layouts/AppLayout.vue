@@ -32,6 +32,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/scss/layout/header.scss";
+
 .header__user a {
   padding-top: 23px;
   padding-right: 60px;
