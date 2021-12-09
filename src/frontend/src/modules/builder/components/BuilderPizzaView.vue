@@ -55,20 +55,6 @@ export default {
     },
   },
   computed: {
-    ingredientsClasses() {
-      return (number) => {
-        let className = "";
-        switch (number) {
-          case 2:
-            className = "pizza__filling--second";
-            break;
-          case 3:
-            className = "pizza__filling--third";
-            break;
-        }
-        return className;
-      };
-    },
     doughName() {
       return this.dough === "large" ? "big" : "small";
     },
@@ -80,6 +66,18 @@ export default {
   methods: {
     onDrop(event) {
       this.$emit("onAddIngredient", event);
+    },
+    ingredientsClasses(number) {
+      let className = "";
+      switch (number) {
+        case 2:
+          className = "pizza__filling--second";
+          break;
+        case 3:
+          className = "pizza__filling--third";
+          break;
+      }
+      return className;
     },
   },
 };
