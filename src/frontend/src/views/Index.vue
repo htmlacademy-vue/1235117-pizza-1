@@ -99,11 +99,10 @@ export default {
       this.pizzaName = pizzaName;
     },
     changeIngredient(event) {
-      let index = this.ingredients.findIndex(
+      let ingredient = this.ingredients.find(
         (item) => item.value === event.value
       );
-      this.ingredients[index].count = event.count;
-      this.ingredients.splice(index, 1, this.ingredients[index]);
+      ingredient.count = event.count;
     },
   },
   computed: {
