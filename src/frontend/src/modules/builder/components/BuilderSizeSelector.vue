@@ -9,7 +9,7 @@
         :value="size.value"
         :checked="size.value === selectedSize"
         :class-name="`diameter__input diameter__input--${size.value}`"
-        @onChange="setSize(size.multiplier)"
+        @onChange="setSize(size)"
       >
         <span>{{ size.name }}</span>
       </radio-button>
@@ -34,8 +34,8 @@ export default {
     },
   },
   methods: {
-    setSize(multiplier) {
-      this.$emit("onChange", multiplier);
+    setSize(size) {
+      this.$emit("onChange", size);
     },
   },
 };

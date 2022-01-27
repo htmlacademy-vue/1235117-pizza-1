@@ -7,6 +7,7 @@
         name="pizza_name"
         placeholder="Введите название пиццы"
         @input="$emit('setName', $event.target.value)"
+        :value="name"
       />
     </label>
 
@@ -39,6 +40,11 @@ export default {
     AppDrop,
   },
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
+
     dough: {
       type: String,
       default: "light",
