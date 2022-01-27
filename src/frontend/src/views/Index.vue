@@ -1,5 +1,6 @@
 <template>
   <div>
+    <router-view />
     <main class="content">
       <form action="#" method="post">
         <div class="content__wrapper">
@@ -8,7 +9,8 @@
           <div class="content__dough">
             <div class="sheet">
               <builder-dough-selector
-                :doughs="doughs"
+                :doughs="pizza.dough"
+                :selectedDough="pizzaConstructor.dough.value"
                 @onChange="setDough"
               ></builder-dough-selector>
             </div>
@@ -17,7 +19,8 @@
           <div class="content__diameter">
             <div class="sheet">
               <builder-size-selector
-                :sizes="sizes"
+                :sizes="pizza.sizes"
+                :selectedSize="pizzaConstructor.size.value"
                 @onChange="setSize"
               ></builder-size-selector>
             </div>
@@ -26,8 +29,9 @@
           <div class="content__ingridients">
             <div class="sheet">
               <builder-ingredients-selector
-                :ingredients="ingredients"
-                :sauces="sauces"
+                :ingredients="pizzaConstructor.ingredients"
+                :sauces="pizza.sauces"
+                :selectedSauce="pizzaConstructor.sauce.value"
                 @onChangeSauce="setSauce"
                 @onChangeIngredient="changeIngredient"
               ></builder-ingredients-selector>
@@ -36,15 +40,17 @@
 
           <div class="content__pizza">
             <builder-pizza-view
-              :dough="dough.value"
-              :sauce="sauce.value"
+              :name="pizzaConstructor.name"
+              :dough="pizzaConstructor.dough.value"
+              :sauce="pizzaConstructor.sauce.value"
               :ingredients="ingredientsList"
               @setName="setPizzaName"
               @onAddIngredient="changeIngredient"
             ></builder-pizza-view>
             <builder-price-counter
-              :total="total"
+              :total="pizzaPrice"
               :isDisable="isDisablePriceCounter"
+              @addCart="addCart"
             ></builder-price-counter>
           </div>
         </div>
@@ -54,30 +60,23 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
-import {
-  normilizeDough,
-  normilizeIngredients,
-  normilizeSauce,
-  normilizeSize,
-} from "@/common/helpers";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import {
+  SET_DOUGH,
+  SET_SAUCE,
+  SET_SIZE,
+  SET_PIZZA_NAME,
+  UPDATE_PIZZA_INGREDIENT,
+} from "@/store/mutations-types";
+
 export default {
   name: "Index",
-  data() {
-    return {
-      dough: { price: 300 },
-      sauce: { price: 50 },
-      size: 2,
-      pizzaName: "",
-      ingredients: pizza.ingredients.map((item) => normilizeIngredients(item)),
-    };
-  },
   components: {
     BuilderDoughSelector,
     BuilderIngredientsSelector,
@@ -86,52 +85,26 @@ export default {
     BuilderPriceCounter,
   },
   methods: {
-    setDough(dough) {
-      this.dough = dough;
-    },
-    setSauce(sauce) {
-      this.sauce = sauce;
-    },
-    setSize(multiplier) {
-      this.size = multiplier;
-    },
-    setPizzaName(pizzaName) {
-      this.pizzaName = pizzaName;
-    },
-    changeIngredient(event) {
-      let ingredient = this.ingredients.find(
-        (item) => item.value === event.value
-      );
-      ingredient.count = event.count;
+    ...mapActions("Builder", ["post"]),
+    ...mapMutations("Builder", {
+      setDough: SET_DOUGH,
+      setSize: SET_SIZE,
+      setSauce: SET_SAUCE,
+      setPizzaName: SET_PIZZA_NAME,
+      changeIngredient: UPDATE_PIZZA_INGREDIENT,
+    }),
+    addCart() {
+      this.post();
     },
   },
   computed: {
-    ingredientsList() {
-      return this.ingredients.filter((item) => item.count > 0);
-    },
-    doughs() {
-      return pizza.dough.map((item) => normilizeDough(item));
-    },
-    sauces() {
-      return pizza.sauces.map((item) => normilizeSauce(item));
-    },
-    sizes() {
-      return pizza.sizes.map((item) => normilizeSize(item));
-    },
-    isDisablePriceCounter() {
-      return Boolean(this.pizzaName.length && this.ingredientsList.length);
-    },
-    total() {
-      let ingredientPrice = this.ingredientsList.reduce(
-        (accumulator, ingredient) => {
-          return accumulator + ingredient.price * ingredient.count;
-        },
-        0
-      );
-      return (
-        this.size * (this.dough.price + this.sauce.price + ingredientPrice)
-      );
-    },
+    ...mapGetters("Builder", [
+      "pizza",
+      "pizzaConstructor",
+      "ingredientsList",
+      "pizzaPrice",
+      "isDisablePriceCounter",
+    ]),
   },
 };
 </script>
