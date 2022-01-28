@@ -32,7 +32,7 @@ export default {
 
     max: {
       type: Number,
-      required: false,
+      default: 3,
     },
 
     value: {
@@ -42,7 +42,7 @@ export default {
 
     styleButtonPlus: {
       type: String,
-      Required: false,
+      default: "",
     },
   },
 };
