@@ -12,7 +12,7 @@ export default {
 
     className: {
       type: String,
-      required: false,
+      default: "",
     },
   },
 };

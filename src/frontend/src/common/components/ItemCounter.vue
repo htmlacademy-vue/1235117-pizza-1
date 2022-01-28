@@ -1,5 +1,5 @@
 <template>
-  <div class="counter counter--orange ingridients__counter">
+  <div class="counter">
     <button
       type="button"
       class="counter__button counter__button--minus"
@@ -13,7 +13,7 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
-      :class="{ 'counter__button--disabled': value === max }"
+      :class="[{ 'counter__button--disabled': value === max }, styleButtonPlus]"
       :disabled="value === max"
       @click="$emit('change', value + 1)"
     >
@@ -38,6 +38,11 @@ export default {
     value: {
       type: Number,
       default: 0,
+    },
+
+    styleButtonPlus: {
+      type: String,
+      default: "",
     },
   },
 };

@@ -27,12 +27,12 @@ export default {
 
     checked: {
       type: Boolean,
-      required: false,
+      default: false,
     },
 
     className: {
       type: String,
-      required: false,
+      default: "",
     },
   },
 };

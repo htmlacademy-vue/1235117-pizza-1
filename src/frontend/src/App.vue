@@ -14,6 +14,9 @@ export default {
   components: {
     AppLayout,
   },
+  created() {
+    this.$store.dispatch("init");
+  },
 };
 </script>
 
@@ -22,4 +25,5 @@ export default {
 @import "~@/assets/scss/fonts.scss";
 @import "~@/assets/scss/scaffolding.scss";
 @import "~@/assets/scss/visually-hidden.scss";
+@import "~@/assets/scss/app";
 </style>

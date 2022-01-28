@@ -44,6 +44,7 @@
               :max="max"
               :value="ingredient.count"
               @change="changeIngredient($event, ingredient.value)"
+              class="ingridients__counter"
             ></item-counter>
           </li>
         </ul>

@@ -6,6 +6,7 @@
       class="button"
       :class="isDisable ? '' : 'button--disabled'"
       :disabled="!isDisable"
+      @click="$emit('addCart')"
     >
       Готовьте!
     </button>

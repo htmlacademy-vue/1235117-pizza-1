@@ -10,7 +10,7 @@
       /></router-link>
     </div>
     <div class="header__cart">
-      <router-link to="cart">{{ total }} ₽</router-link>
+      <router-link to="cart">{{ totalPrice }} ₽</router-link>
     </div>
     <div class="header__user">
       <router-link to="profile" class="header__login"
@@ -24,7 +24,7 @@
 export default {
   name: "AppLayoutHeader",
   props: {
-    total: {
+    totalPrice: {
       type: Number,
       default: 0,
     },
