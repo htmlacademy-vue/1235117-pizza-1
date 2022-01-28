@@ -10,6 +10,7 @@ import {
   CHANGE_PIZZA,
   UPDATE_PIZZA_INGREDIENT,
   ADD_ENTITY,
+  UPDATE_ENTITY,
 } from "@/store/mutations-types";
 import {
   normilizeDough,
@@ -43,23 +44,39 @@ export default {
       commit("SET_PIZZA_DATA", pizza);
       commit("SET_PIZZA");
     },
-    post({ state, getters, commit }) {
+    post({ state, getters, commit, rootState }) {
       let pizza = cloneDeep(state.pizzaConstructor);
 
-      commit(
-        ADD_ENTITY,
-        {
-          module: "Cart",
-          entity: "pizzas",
-          value: {
-            ...pizza,
-            price: getters["pizzaPrice"],
-            count: 1,
-            id: uniqueId(),
-          },
-        },
-        { root: true }
+      let pizzaUpdate = rootState.Cart.pizzas.find(
+        (item) => item.id === pizza.id
       );
+
+      if (pizzaUpdate) {
+        commit(
+          UPDATE_ENTITY,
+          {
+            module: "Cart",
+            entity: "pizzas",
+            value: { ...pizza, price: getters["pizzaPrice"] },
+          },
+          { root: true }
+        );
+      } else {
+        commit(
+          ADD_ENTITY,
+          {
+            module: "Cart",
+            entity: "pizzas",
+            value: {
+              ...pizza,
+              price: getters["pizzaPrice"],
+              count: 1,
+              id: uniqueId(),
+            },
+          },
+          { root: true }
+        );
+      }
     },
   },
   getters: {
@@ -94,6 +111,7 @@ export default {
       state.pizza = pizza;
     },
     [SET_PIZZA](state) {
+      state.pizzaConstructor.id = uniqueId();
       state.pizzaConstructor.name = "";
       state.pizzaConstructor.dough = state.pizza.dough[0];
       state.pizzaConstructor.size = state.pizza.sizes[1];
@@ -106,11 +124,7 @@ export default {
       );
     },
     [CHANGE_PIZZA](state, pizza) {
-      state.pizzaConstructor.name = pizza.name;
-      state.pizzaConstructor.dough = pizza.dough;
-      state.pizzaConstructor.size = pizza.size;
-      state.pizzaConstructor.sauce = pizza.sauce;
-      state.pizzaConstructor.ingredients = pizza.ingredients;
+      state.pizzaConstructor = cloneDeep(pizza);
     },
     [SET_DOUGH](state, dough) {
       state.pizzaConstructor.dough = dough;
