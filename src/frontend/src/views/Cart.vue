@@ -15,10 +15,10 @@
           @onChangePizza="changePizza"
         ></cart-list>
         <cart-additional
-          :additionals="getAdditionals"
+          :additionals="additionals"
           @onChangeAdditional="changeAdditional"
         ></cart-additional>
-        <cart-form :delivery="getDelivery"></cart-form>
+        <cart-form :delivery="delivery"></cart-form>
       </div>
     </main>
     <cart-popup v-if="showModal" @close="closePopup"></cart-popup>
@@ -45,7 +45,7 @@ import {
   CLEAR_CART,
 } from "@/store/mutations-types";
 
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
   name: "Cart",
@@ -62,12 +62,8 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("Cart", [
-      "getPizzas",
-      "getAdditionals",
-      "getTotalPrice",
-      "getDelivery",
-    ]),
+    ...mapGetters("Cart", ["getPizzas", "getTotalPrice"]),
+    ...mapState("Cart", ["additionals", "delivery"]),
   },
   methods: {
     ...mapMutations("Cart", {

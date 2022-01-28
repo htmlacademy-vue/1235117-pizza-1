@@ -21,7 +21,7 @@ import {
 export default {
   namespaced: true,
   state: () => ({
-    data: {},
+    pizza: {},
     pizzaConstructor: {
       name: "",
       ingredients: [],
@@ -63,12 +63,6 @@ export default {
     },
   },
   getters: {
-    pizza(state) {
-      return state.data;
-    },
-    pizzaConstructor(state) {
-      return state.pizzaConstructor;
-    },
     pizzaPrice(state) {
       let ingredientPrice = state.pizzaConstructor.ingredients.reduce(
         (accumulator, ingredient) => {
@@ -97,14 +91,14 @@ export default {
 
   mutations: {
     [SET_PIZZA_DATA](state, pizza) {
-      state.data = pizza;
+      state.pizza = pizza;
     },
     [SET_PIZZA](state) {
       state.pizzaConstructor.name = "";
-      state.pizzaConstructor.dough = state.data.dough[0];
-      state.pizzaConstructor.size = state.data.sizes[1];
-      state.pizzaConstructor.sauce = state.data.sauces[0];
-      state.pizzaConstructor.ingredients = state.data.ingredients.map(
+      state.pizzaConstructor.dough = state.pizza.dough[0];
+      state.pizzaConstructor.size = state.pizza.sizes[1];
+      state.pizzaConstructor.sauce = state.pizza.sauces[0];
+      state.pizzaConstructor.ingredients = state.pizza.ingredients.map(
         (item) => {
           item.count = 0;
           return item;

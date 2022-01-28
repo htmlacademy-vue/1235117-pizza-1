@@ -43,9 +43,6 @@ export default {
     getPizzas(state) {
       return state.pizzas.filter((item) => item.count > 0);
     },
-    getAdditionals(state) {
-      return state.additionals;
-    },
     getTotalPrice(state) {
       let pizzasPrice = state.pizzas.reduce((sum, { price, count }) => {
         return sum + price * count;
@@ -59,9 +56,6 @@ export default {
       );
 
       return pizzasPrice + additionalPrice;
-    },
-    getDelivery(state) {
-      return state.delivery;
     },
   },
   mutations: {

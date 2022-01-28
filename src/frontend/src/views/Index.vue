@@ -66,7 +66,7 @@ import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngr
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import {
   SET_DOUGH,
   SET_SAUCE,
@@ -99,12 +99,11 @@ export default {
   },
   computed: {
     ...mapGetters("Builder", [
-      "pizza",
-      "pizzaConstructor",
       "ingredientsList",
       "pizzaPrice",
       "isDisablePriceCounter",
     ]),
+    ...mapState("Builder", ["pizza", "pizzaConstructor"]),
   },
 };
 </script>
